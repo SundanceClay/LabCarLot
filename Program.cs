@@ -1,6 +1,7 @@
 ﻿using LabUsedCarLot;
 
 bool repeat = true;
+string error = "I'm sorry, that is not a valid option.";
 
 List<Car> carList = new List<Car>();
 var car1 = new Car("Ford", "Fusion", 2006, 20500.99m);
@@ -21,9 +22,9 @@ string yn = "y";
 while (yn == "y")
 {
     bool isNew;
-    Console.WriteLine("What would you like to do?\nChoose a number (1-5):" +
-        "\n1. Show list.  2. Add car.  3. Select/Buy car.  4. Modify car.  5. Exit.");
-    int userToDo = userChoice(5);
+    Console.WriteLine("What would you like to do?\nChoose a number (1-4):" +
+        "\n1. Show list.  2. Add car.  3. Select/Buy car.  4. Exit.");
+    int userToDo = userChoice(4);
     
     switch (userToDo)
     {
@@ -32,23 +33,39 @@ while (yn == "y")
             break;
         case 2:
             Console.WriteLine("Add a car. Is it new? y or n");
-            if (Console.ReadLine().ToLower() == "y")
-                isNew = true;
-            else 
-                isNew = false;
-
-            carList.Add(CarLotApp.AddCar(isNew));
-
+            switch (Console.ReadLine().ToLower())
+            {
+                case "y":
+                    isNew = true;
+                    carList.Add(CarLotApp.AddCar(isNew));
+                    break;
+                case "n":
+                    isNew = false;
+                    carList.Add(CarLotApp.AddCar(isNew));
+                    break;
+                default:
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine(error + "\n");
+                    Console.ForegroundColor = ConsoleColor.White;
+                    break;
+            }
             break;
         case 3:
-            Console.WriteLine("Buy Car number 4 demo:");
+
             CarLotApp.ListCars(carList);
-            buyCar = intParse.Console.ReadLine();
-            carList = CarLotApp.BuyCar(4, carList);
+            int buyCar;
+            var buyCarBool = int.TryParse(Console.ReadLine(), out buyCar);
+            if (buyCarBool && buyCar <= carList.Count)
+                carList = CarLotApp.BuyCar(buyCar, carList);
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine(error + "\n");
+                Console.ForegroundColor = ConsoleColor.White;
+            }
             break;
+
         case 4:
-            break;
-        case 5:
             yn = "n";
             break;
         default:
