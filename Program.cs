@@ -24,7 +24,7 @@ while (yn == "y")
     bool isNew;
     Console.WriteLine("What would you like to do?\nChoose a number (1-4):" +
         "\n1. Show list.  2. Add car.  3. Select/Buy car.  4. Exit.");
-    int userToDo = userChoice(4);
+    int userToDo = CarLotApp.UserChoice(4);
     
     switch (userToDo)
     {
@@ -72,23 +72,4 @@ while (yn == "y")
 
             break;
     }
-}
-
-static int userChoice(int numChoices)
-{
-    bool parsedSuccessfully = false;
-    int userToDo = 1;
-    do
-    {
-        string userInput = Console.ReadLine();
-        parsedSuccessfully = int.TryParse(userInput, out userToDo);
-        if (!parsedSuccessfully || userToDo <= 0 || userToDo > numChoices)
-        {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("Entry not valid.");
-            Console.ForegroundColor = ConsoleColor.White;
-        }
-    }
-    while (!parsedSuccessfully);
-    return userToDo;
 }
